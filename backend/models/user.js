@@ -20,10 +20,10 @@ const users = new mongoose.Schema({
     type: String,
     requried: true,
   },
-  profileImage: {
-    type: String,
-    requried: true,
-  },
+  // profileImage: {
+  //   type: String,
+  //   requried: true,
+  // },
 });
 
 // exporting the database

@@ -6,7 +6,8 @@ const upload = require("../middleware/multer");
 
 // declaring the routes for the user
 router.get("/", loginController.getLogin);
+router.post("/", loginController.postLogin);
 router.post("/home", loginController.postHome);
-router.post("/signup", upload.single("file"), loginController.postSignupPage);
+router.post("/signup", loginController.postSignupPage);
 
 module.exports = router;
