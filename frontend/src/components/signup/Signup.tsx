@@ -1,4 +1,5 @@
 import React from "react";
+import "../signup/Signup.css";
 
 const Signup = () => {
   return (
@@ -59,6 +60,18 @@ const Signup = () => {
           <label htmlFor="password" className="label">
             password
           </label>
+        </div>
+
+        <div className="input_box">
+          <label htmlFor="image" className="imageLabel">
+            Upload profile picture
+          </label>
+          <input
+            type="file"
+            id="image"
+            className="input_field"
+            // onChange={handleImageChange}
+          />
         </div>
 
         <div className="input_box">

@@ -1,6 +1,7 @@
 // backend/controller/user/login.js
 const express = require("express");
 const router = express.Router();
+const profilePicture = require("../../middleware/multer");
 
 // controller for showing the login page
 module.exports.getLogin = (req, res) => {
