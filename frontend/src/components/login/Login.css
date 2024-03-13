@@ -79,8 +79,8 @@ body {
   background: transparent;
 }
 
-.input_field:focus ~ .label,
-.input_field:valid .label {
+.input_field:focus .label,
+.input_field:valid ~ .label {
   position: absolute;
   top: -10px;
   left: 20px;
@@ -142,11 +142,15 @@ body {
   cursor: pointer;
 }
 
+.register span {
+  color: #000000;
+}
+
 @media only screen and (max-width: 564px) {
   .wrapper {
     padding: 20px;
   }
   .login_box {
-    padding: 7.5em 5em 4em 1.5em;
+    padding: 7.5em 1.5em 4em 1.5em;
   }
 }

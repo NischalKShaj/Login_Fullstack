@@ -7,7 +7,7 @@
 
 :root {
   --primary-color: #c6c3c3;
-  --second-color: #ffffff;
+  --seconsd-color: #ffffff;
   --black-color: #000000;
 }
 
@@ -28,17 +28,17 @@ body {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-.login_box {
+.home_box {
   position: relative;
   width: 450px;
   backdrop-filter: blur(25px);
   border: 2px solid var(--primary-color);
   border-radius: 15px;
   padding: 7.5em 2.5em 4em 2.5em;
-  color: var(--second-color);
+  color: var(--seconsd-color);
 }
 
-.login_header {
+.home_header {
   position: absolute;
   top: 0;
   left: 50%;
@@ -47,17 +47,17 @@ body {
   align-items: center;
   justify-content: center;
   background-color: var(--primary-color);
-  width: 140px;
+  width: 200px;
   height: 70px;
   border-radius: 0 0 20px 20px;
 }
 
-.login_header span {
+.home_header span {
   font-size: 30px;
   color: var(--black-color);
 }
 
-.login_header::before {
+.home_header::before {
   content: "";
   position: absolute;
   top: 0;
@@ -68,7 +68,7 @@ body {
   background: transparent;
 }
 
-.login_header::after {
+.home_header::after {
   content: "";
   position: absolute;
   top: 0;
@@ -79,18 +79,7 @@ body {
   background: transparent;
 }
 
-.input-field:focus .label,
-.input_field:valid ~ .label {
-  position: absolute;
-  top: -10px;
-  left: 20px;
-  font-size: 14px;
-  border-radius: 30px;
-  color: var(--black-color);
-  padding: 0 10px;
-}
-
-.input_box {
+.username_box {
   align-items: center;
   position: relative;
   display: flex;
@@ -98,33 +87,42 @@ body {
   margin: 20px 0;
 }
 
-.input_field {
+.username_field {
   width: 100%;
   height: 55px;
   font-size: 16px;
   background: transparent;
-  color: var(--second-color);
+  color: var(--seconsd-color);
   padding-inline: 20px 50px;
   border: 2px solid var(--primary-color);
   border-radius: 100px;
   outline: none;
 }
 
-#user {
-  margin-bottom: 10px;
+.useremail_box {
+  align-items: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
 }
 
-.label {
-  position: absolute;
-  top: 15px;
-  left: 20px;
-  transition: 0.2s;
+.useremail_field {
+  width: 100%;
+  height: 55px;
+  font-size: 16px;
+  background: transparent;
+  color: var(--seconsd-color);
+  padding-inline: 20px 50px;
+  border: 2px solid var(--primary-color);
+  border-radius: 100px;
+  outline: none;
 }
 
-.input_submit {
+.edit_profile {
   width: 100px;
   height: 50px;
-  background: #ececec;
+  background: #04fc04a8;
   font-size: 16px;
   font-weight: 500;
   border: none;
@@ -133,24 +131,14 @@ body {
   transition: 0.3s;
 }
 
-.input_submit:hover {
-  background: var(--second-color);
-}
-
-.register {
-  text-align: center;
+.logout_user {
+  width: 100px;
+  height: 50px;
+  background: #f00303be;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 30px;
   cursor: pointer;
-}
-
-.imageLabel {
-  text-align: left;
-}
-
-@media only screen and (max-width: 564px) {
-  .wrapper {
-    padding: 20px;
-  }
-  .login_box {
-    padding: 7.5em 5em 4em 1.5em;
-  }
+  float: right;
 }

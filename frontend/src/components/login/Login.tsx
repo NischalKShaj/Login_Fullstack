@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
-import axios, { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -26,38 +26,11 @@ const Login = () => {
       console.log(error);
     }
   };
-  // const handleLogin = async () => {
-  //   try {
-  //     const response = await axios.post("http://localhost:4001/home", {
-  //       email,
-  //       password,
-  //     });
-
-  //     if (response.data.success) {
-  //       console.log("login success");
-  //       navigate("/home");
-  //     } else {
-  //       console.log("login failed", response.data.message);
-  //       // No need to navigate here, since login failed
-  //     }
-  //   } catch (error) {
-  //     if (
-  //       (error as AxiosError).response &&
-  //       (error as AxiosError).response?.status === 401
-  //     ) {
-  //       console.log("Invalid credentials");
-  //       navigate("/");
-  //       // Handle invalid credentials error here
-  //     } else {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
 
   // signup logic implemented
-  const handleSignup = async () => {
-    navigate("/signup");
-  };
+  // const handleSignup = () => {
+  //   navigate("/signup");
+  // };
 
   return (
     <div className="wrapper">
@@ -99,7 +72,9 @@ const Login = () => {
         </div>
 
         <div className="register">
-          <span onClick={handleSignup}>Dont have an account?Register</span>
+          <Link to="/signup">
+            <span>Dont have an account?Register</span>
+          </Link>
         </div>
       </div>
     </div>
