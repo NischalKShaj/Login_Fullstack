@@ -1,9 +1,9 @@
 // importing the required modules
 const express = require("express");
-const mongoose = require("./backend/config/database");
+const mongoose = require("./config/database");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const userRoute = require("./backend/routes/user");
+const userRoute = require("./routes/user");
 require("dotenv").config();
 
 // intialising the app
@@ -19,6 +19,13 @@ app.use(cors());
 
 // routes for the user and admin
 app.use("/", userRoute);
+
+// error middleware
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal server error";
+  return res.status(statusCode).json({ success: false, message, statusCode });
+});
 
 // starting the server
 app.listen(port, () => {

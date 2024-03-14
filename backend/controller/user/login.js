@@ -1,6 +1,7 @@
 // backend/controller/user/login.js
 const express = require("express");
 const router = express.Router();
+const bcryptjs = require("bcryptjs");
 // const profilePicture = require("../../middleware/multer");
 const userCollection = require("../../models/user");
 
@@ -10,7 +11,7 @@ module.exports.getLogin = (req, res) => {
 };
 
 // controller for rendering the home page
-module.exports.postHome = async (req, res) => {
+module.exports.postHome = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await userCollection.findOne({ email });
@@ -19,26 +20,29 @@ module.exports.postHome = async (req, res) => {
       console.log("user logged successfully");
       res.status(200).json({ success: true, message: "user logged in" });
     } else {
+      console.log("invalid credentials");
       res.status(401).json({ success: false, message: "invalid credentials" });
     }
   } catch (error) {
     console.log(error);
+    next(error);
   }
 };
 
 // controller for rendering the signup page
-module.exports.postSignupPage = (req, res) => {
+module.exports.postSignupPage = (req, res, next) => {
   try {
     const { firstname, lastname, email, password } = req.body;
     console.log(email, password, firstname, lastname);
     res.status(200).json({ message: "user signed successfully" });
   } catch (error) {
     console.log(error);
+    next(error);
   }
 };
 
 // controller for rendering the login page after signup
-module.exports.postLogin = async (req, res) => {
+module.exports.postLogin = async (req, res, next) => {
   try {
     const { firstname, lastname, email, password } = req.body;
     console.log(firstname, lastname, email, password);
@@ -47,17 +51,18 @@ module.exports.postLogin = async (req, res) => {
     if (user) {
       res.status(400).json({ success: false, message: "user already exist" });
     } else {
+      const hashedPassword = bcryptjs.hashSync(password, 10);
       const userDetails = new userCollection({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
-        password: req.body.password,
+        password: hashedPassword,
       });
       await userDetails.save();
       res.status(200).json({ success: true, message: "signup successs" });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
+    next(error);
   }
 };

@@ -1,9 +1,10 @@
 // importing the required modules
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 // establishing the connection
 mongoose
-  .connect("mongodb://localhost:27017/CRUD_APPLICATION")
+  .connect(process.env.MONGODB)
   .then(() => {
     console.log("database connected successfully...");
   })
