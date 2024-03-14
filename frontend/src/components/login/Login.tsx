@@ -27,14 +27,9 @@ const Login = () => {
     }
   };
 
-  // signup logic implemented
-  // const handleSignup = () => {
-  //   navigate("/signup");
-  // };
-
   return (
     <div className="wrapper">
-      <div className="login_box">
+      <form className="login_box">
         <div className="login_header">
           <span>Login</span>
         </div>
@@ -76,7 +71,7 @@ const Login = () => {
             <span>Dont have an account?Register</span>
           </Link>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

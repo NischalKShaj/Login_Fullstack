@@ -1,41 +1,29 @@
-import React, { useState } from "react";
+import React, { ChangeEventHandler, useState } from "react";
 import "../signup/Signup.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Signup = () => {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
-  // function to handle the signup and send the data to backend and navigate to login page
-  const handleSignup = async () => {
-    try {
-      const response = await axios.post("http://localhost:4001/", {
-        firstname,
-        lastname,
-        email,
-        password,
-      });
-      console.log(response.data);
+  // function to handle data in the form
+  const handleSignup: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const target = e.currentTarget;
+    setFormData({ ...formData, [target.id]: target.value });
+  };
 
-      if (response.data.success) {
-        console.log("signup success");
-        navigate("/");
-      } else {
-        console.log("signup failed", response.data.message);
-        navigate("/signup");
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  // fuction to handle the signup and send the data to the backend
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await axios.post("http://localhost:4001/", formData);
+    const data = await response.data;
+    console.log(data);
   };
 
   return (
     <div className="wrapper">
-      <div className="login_box">
+      <form onSubmit={handleSubmit} className="login_box">
         <div className="login_header">
           <span>Signup</span>
         </div>
@@ -43,10 +31,11 @@ const Signup = () => {
         <div className="input_box">
           <input
             type="text"
-            id="fname"
+            id="firstname"
             className="input_field"
-            value={firstname}
-            onChange={(e) => setFirstname(e.target.value)}
+            // value={firstname}
+            onChange={handleSignup}
+            required
           />
           <label htmlFor="firstname" className="label">
             firstname
@@ -56,10 +45,11 @@ const Signup = () => {
         <div className="input_box">
           <input
             type="text"
-            id="lname"
+            id="lastname"
             className="input_field"
-            value={lastname}
-            onChange={(e) => setLastname(e.target.value)}
+            // value={lastname}
+            onChange={handleSignup}
+            required
           />
           <label htmlFor="lastname" className="label">
             lastname
@@ -69,10 +59,11 @@ const Signup = () => {
         <div className="input_box">
           <input
             type="email"
-            id="user"
+            id="email"
             className="input_field"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            // value={email}
+            onChange={handleSignup}
+            required
           />
           <label htmlFor="email" className="label">
             email
@@ -82,11 +73,11 @@ const Signup = () => {
         <div className="input_box">
           <input
             type="password"
-            id="pass"
+            id="password"
             className="input_field"
             required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            // value={password}
+            onChange={handleSignup}
           />
           <label htmlFor="password" className="label">
             password
@@ -106,11 +97,11 @@ const Signup = () => {
         </div> */}
 
         <div className="input_box">
-          <button type="submit" className="input_submit" onClick={handleSignup}>
+          <button type="submit" className="input_submit">
             submit
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };

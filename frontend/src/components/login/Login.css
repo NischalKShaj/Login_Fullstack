@@ -131,6 +131,7 @@ body {
   border-radius: 30px;
   cursor: pointer;
   transition: 0.3s;
+  text-transform: uppercase;
 }
 
 .input_submit:hover {
