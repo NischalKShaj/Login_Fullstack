@@ -2,7 +2,9 @@
 const express = require("express");
 const router = express.Router();
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 // const profilePicture = require("../../middleware/multer");
+const errorHandler = require("../../middleware/error");
 const userCollection = require("../../models/user");
 
 // controller for showing the login page
@@ -16,13 +18,19 @@ module.exports.postHome = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await userCollection.findOne({ email });
 
-    if (user && user.password === password) {
-      console.log("user logged successfully");
-      res.status(200).json({ success: true, message: "user logged in" });
-    } else {
-      console.log("invalid credentials");
-      res.status(401).json({ success: false, message: "invalid credentials" });
-    }
+    if (!user) return next(errorHandler.handleError(404, "User not found"));
+    const validPassword = bcryptjs.compareSync(password, user.password);
+    if (!validPassword)
+      return next(errorHandler.handleError(401, "Invalid credentials"));
+    // setting the jwt token for the userlogin
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const { password: hashedPassword, ...rest } = user._doc;
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 7);
+    res
+      .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
+      .status(200)
+      .json(rest);
   } catch (error) {
     console.log(error);
     next(error);

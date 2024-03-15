@@ -110,7 +110,7 @@ body {
   outline: none;
 }
 
-#user {
+#email {
   margin-bottom: 10px;
 }
 
@@ -141,6 +141,10 @@ body {
 .register {
   text-align: center;
   cursor: pointer;
+}
+
+.errorText {
+  color: rgb(243, 0, 0);
 }
 
 .imageLabel {

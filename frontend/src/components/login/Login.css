@@ -110,7 +110,7 @@ body {
   outline: none;
 }
 
-#user {
+#email {
   margin-bottom: 10px;
 }
 
@@ -144,7 +144,7 @@ body {
 }
 
 .register span {
-  color: #000000;
+  color: white;
 }
 
 @media only screen and (max-width: 564px) {

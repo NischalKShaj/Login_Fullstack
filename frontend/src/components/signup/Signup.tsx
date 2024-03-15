@@ -2,9 +2,12 @@ import React, { ChangeEventHandler, useState } from "react";
 import "../signup/Signup.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import BASE_URL from "../../Routes/config";
 
 const Signup = () => {
   const [formData, setFormData] = useState({});
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   // function to handle data in the form
@@ -16,9 +19,24 @@ const Signup = () => {
   // fuction to handle the signup and send the data to the backend
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await axios.post("http://localhost:4001/", formData);
-    const data = await response.data;
-    console.log(data);
+    try {
+      setLoading(true);
+      setError("");
+      const response = await axios.post(`${BASE_URL}/`, formData);
+      const data = await response.data;
+      setLoading(false);
+      if (data.success === false) {
+        setError(data.message);
+        return;
+      }
+      navigate("/");
+    } catch (error: any) {
+      setLoading(false);
+      setError(
+        error.response.data.message ||
+          "Something went wrong. Please try again..."
+      );
+    }
   };
 
   return (
@@ -27,6 +45,7 @@ const Signup = () => {
         <div className="login_header">
           <span>Signup</span>
         </div>
+        <p className="errorText">{error}</p>
 
         <div className="input_box">
           <input
@@ -97,8 +116,8 @@ const Signup = () => {
         </div> */}
 
         <div className="input_box">
-          <button type="submit" className="input_submit">
-            submit
+          <button disabled={loading} type="submit" className="input_submit">
+            {loading ? "Loading..." : "sign up"}
           </button>
         </div>
       </form>
