@@ -18,10 +18,15 @@ module.exports.postHome = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await userCollection.findOne({ email });
 
-    if (!user) return next(errorHandler.handleError(404, "User not found"));
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     const validPassword = bcryptjs.compareSync(password, user.password);
     if (!validPassword)
-      return next(errorHandler.handleError(401, "Invalid credentials"));
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid credentials" });
     // setting the jwt token for the userlogin
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     const { password: hashedPassword, ...rest } = user._doc;
@@ -33,7 +38,7 @@ module.exports.postHome = async (req, res, next) => {
       .json(rest);
   } catch (error) {
     console.log(error);
-    next(error);
+    res.status(500).json({ success: false, message: "Something went wrong" });
   }
 };
 

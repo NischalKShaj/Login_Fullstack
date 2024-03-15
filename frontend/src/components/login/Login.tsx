@@ -1,14 +1,21 @@
 import React, { ChangeEventHandler, useState } from "react";
 import "../login/Login.css";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import BASE_URL from "../../Routes/config";
+import {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+} from "../../redux/user/userSlice";
+import type { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { loading, error } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // function to handle data in the form
   const handleSignup: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -20,22 +27,30 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      setLoading(true);
-      setError("");
+      dispatch(loginStart());
       const response = await axios.post(`${BASE_URL}/home`, formData);
       const data = await response.data;
-      setLoading(false);
       if (data.success === false) {
-        setError(data.message);
+        dispatch(loginFailure(data.message));
         return;
       }
+      dispatch(loginSuccess(data));
       navigate("/home");
     } catch (error: any) {
-      setLoading(false);
-      setError(
-        error.response.data.message ||
-          "Something went wrong. Please try again..."
-      );
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError<any>;
+        if (
+          axiosError.response &&
+          axiosError.response.data &&
+          axiosError.response.data.message
+        ) {
+          dispatch(loginFailure(axiosError.response.data.message));
+        } else {
+          dispatch(loginFailure("Something went wrong. Please try again..."));
+        }
+      } else {
+        dispatch(loginFailure("Something went wrong. Please try again..."));
+      }
     }
   };
 
