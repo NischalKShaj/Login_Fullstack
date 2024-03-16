@@ -1,15 +1,33 @@
 // importing requrired modules for the redux statemanagement
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./user/userSlice";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+// combining reducers
+const rootReducer = combineReducers({ user: userReducer });
+
+// adding the persistConfig this helps in storing the data in the localstorage
+const persistConfig = {
+  key: "root",
+  version: 1,
+  storage,
+};
+
+// using redux persist
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // exporting the store
 export const store = configureStore({
-  reducer: { user: userReducer },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
 });
+
+// exporting the persist store
+export const persistor = persistStore(store);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
