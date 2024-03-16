@@ -4,11 +4,7 @@ const mongoose = require("mongoose");
 // declaring the schema for the userDatabase
 const users = new mongoose.Schema(
   {
-    firstname: {
-      type: String,
-      required: true,
-    },
-    lastname: {
+    username: {
       type: String,
       required: true,
     },

@@ -10,6 +10,7 @@ import {
 } from "../../redux/user/userSlice";
 import type { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
+import Oauth from "../OAuth/Oauth";
 
 const Login = () => {
   const [formData, setFormData] = useState({});
@@ -93,6 +94,7 @@ const Login = () => {
             {loading ? "Loading..." : "Login"}
           </button>
         </div>
+        <Oauth />
         <div className="register">
           <Link to="/signup">
             <span>Dont have an account? Register</span>

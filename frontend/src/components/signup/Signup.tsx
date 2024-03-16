@@ -3,6 +3,7 @@ import "../signup/Signup.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../Routes/config";
+import Oauth from "../OAuth/Oauth";
 
 const Signup = () => {
   const [formData, setFormData] = useState({});
@@ -50,28 +51,14 @@ const Signup = () => {
         <div className="input_box">
           <input
             type="text"
-            id="firstname"
+            id="username"
             className="input_field"
             // value={firstname}
             onChange={handleSignup}
             required
           />
-          <label htmlFor="firstname" className="label">
-            firstname
-          </label>
-        </div>
-
-        <div className="input_box">
-          <input
-            type="text"
-            id="lastname"
-            className="input_field"
-            // value={lastname}
-            onChange={handleSignup}
-            required
-          />
-          <label htmlFor="lastname" className="label">
-            lastname
+          <label htmlFor="username" className="label">
+            username
           </label>
         </div>
 
@@ -120,6 +107,7 @@ const Signup = () => {
             {loading ? "Loading..." : "sign up"}
           </button>
         </div>
+        <Oauth />
       </form>
     </div>
   );

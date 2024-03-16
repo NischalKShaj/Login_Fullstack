@@ -57,8 +57,8 @@ module.exports.postSignupPage = (req, res, next) => {
 // controller for rendering the login page after signup
 module.exports.postLogin = async (req, res, next) => {
   try {
-    const { firstname, lastname, email, password } = req.body;
-    console.log(firstname, lastname, email, password);
+    const { username, email, password } = req.body;
+    console.log(username, email, password);
 
     const user = await userCollection.findOne({ email: req.body.email });
     if (user) {
@@ -66,8 +66,7 @@ module.exports.postLogin = async (req, res, next) => {
     } else {
       const hashedPassword = bcryptjs.hashSync(password, 10);
       const userDetails = new userCollection({
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
+        username: req.body.username,
         email: req.body.email,
         password: hashedPassword,
       });
