@@ -78,3 +78,24 @@ module.exports.postLogin = async (req, res, next) => {
     next(error);
   }
 };
+
+// controller for creating the google authentication
+module.exports.googleAuth = async (req, res) => {
+  try {
+    const user = await userCollection.findOne({ email: req.body.email });
+    if (user) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const { password: hashedPassword, ...rest } = user._doc;
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 7);
+      res.cookie("access_token", token, {
+        httpOnly: true,
+        expires: expiryDate,
+      });
+    } else {
+      const generatedPassword = Math.random().toString(36).slice(-8);
+    }
+  } catch (error) {
+    console.log("error", error);
+  }
+};

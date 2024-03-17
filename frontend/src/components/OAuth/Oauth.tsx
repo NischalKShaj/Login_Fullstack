@@ -4,15 +4,29 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { app } from "../../firebase/firebase";
 import BASE_URL from "../../Routes/config";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../redux/user/userSlice";
 
 const Oauth = () => {
+  const dispatch = useDispatch();
   const handleGoogleAuth = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
-      const response = await axios.post(`${BASE_URL}/auth/google`);
+      const response = await fetch(`${BASE_URL}/auth/google`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+        }),
+      });
+      const data = await response.json();
+      dispatch(loginSuccess(data));
     } catch (error) {
       console.log("could not login with google", error);
     }

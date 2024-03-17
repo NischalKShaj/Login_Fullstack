@@ -9,5 +9,6 @@ router.get("/", loginController.getLogin);
 router.post("/", loginController.postLogin);
 router.post("/home", loginController.postHome);
 router.post("/signup", loginController.postSignupPage);
+router.post("/auth/google", loginController.googleAuth);
 
 module.exports = router;
