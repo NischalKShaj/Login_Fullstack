@@ -1,7 +1,10 @@
 import React from "react";
 import "./Home.css";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const Home = () => {
+  const { currentUser } = useSelector((state: RootState) => state.user);
   return (
     <div className="wrapper">
       <div className="home_box">
@@ -9,12 +12,11 @@ const Home = () => {
           <span>User Profile</span>
         </div>
 
-        <div className="username_box">
-          <input
-            type="text"
-            className="username_field"
-            value="firstname"
-            readOnly
+        <div className="profile_picture">
+          <img
+            src={currentUser.profileImage}
+            alt="Profile"
+            className="profile_image"
           />
         </div>
 
@@ -22,7 +24,7 @@ const Home = () => {
           <input
             type="text"
             className="username_field"
-            value="lastname"
+            value={`username: ${currentUser.username}`}
             readOnly
           />
         </div>
@@ -31,7 +33,7 @@ const Home = () => {
           <input
             type="text"
             className="useremail_field"
-            value="useremail"
+            value={`email: ${currentUser.email}`}
             readOnly
           />
         </div>

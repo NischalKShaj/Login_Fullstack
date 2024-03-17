@@ -1,4 +1,5 @@
-import React, { ChangeEventHandler, useState } from "react";
+// import all the required modules for the login page
+import React, { ChangeEventHandler, useEffect, useState } from "react";
 import "../login/Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
@@ -13,10 +14,18 @@ import { useDispatch, useSelector } from "react-redux";
 import Oauth from "../OAuth/Oauth";
 
 const Login = () => {
+  const { currentUser } = useSelector((state: RootState) => state.user);
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // using useEffect to check whether user is logged in or not
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/home");
+    }
+  }, [currentUser, navigate]);
 
   // function to handle data in the form
   const handleSignup: ChangeEventHandler<HTMLInputElement> = (e) => {

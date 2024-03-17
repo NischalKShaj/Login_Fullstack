@@ -6,8 +6,10 @@ import { app } from "../../firebase/firebase";
 import BASE_URL from "../../Routes/config";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Oauth = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleGoogleAuth = async () => {
     try {
@@ -20,12 +22,13 @@ const Oauth = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: result.user.displayName,
+          username: result.user.displayName,
           email: result.user.email,
           photo: result.user.photoURL,
         }),
       });
       const data = await response.json();
+      navigate("/home");
       dispatch(loginSuccess(data));
     } catch (error) {
       console.log("could not login with google", error);

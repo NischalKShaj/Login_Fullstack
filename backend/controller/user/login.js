@@ -45,8 +45,8 @@ module.exports.postHome = async (req, res, next) => {
 // controller for rendering the signup page
 module.exports.postSignupPage = (req, res, next) => {
   try {
-    const { firstname, lastname, email, password } = req.body;
-    console.log(email, password, firstname, lastname);
+    const { username, email, password } = req.body;
+    console.log(email, password, username);
     res.status(200).json({ message: "user signed successfully" });
   } catch (error) {
     console.log(error);
@@ -88,12 +88,34 @@ module.exports.googleAuth = async (req, res) => {
       const { password: hashedPassword, ...rest } = user._doc;
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 7);
-      res.cookie("access_token", token, {
-        httpOnly: true,
-        expires: expiryDate,
-      });
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          expires: expiryDate,
+        })
+        .status(200)
+        .json(rest);
     } else {
       const generatedPassword = Math.random().toString(36).slice(-8);
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+      const newUser = new userCollection({
+        username: req.body.username.split(" ").join(""),
+        email: req.body.email,
+        password: hashedPassword,
+        profileImage: req.body.photo,
+      });
+      await newUser.save();
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const { password: hashedPassword2, ...rest } = newUser._doc;
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 7);
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          expires: expiryDate,
+        })
+        .status(200)
+        .json(rest);
     }
   } catch (error) {
     console.log("error", error);
