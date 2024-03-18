@@ -4,8 +4,8 @@ const router = express.Router();
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 // const profilePicture = require("../../middleware/multer");
-const errorHandler = require("../../middleware/error");
-const userCollection = require("../../models/user");
+const errorHandler = require("../../middleware/error.js");
+const userCollection = require("../../models/user.js");
 
 // controller for showing the login page
 module.exports.getLogin = (req, res) => {
@@ -16,6 +16,7 @@ module.exports.getLogin = (req, res) => {
 module.exports.postHome = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
     const user = await userCollection.findOne({ email });
 
     if (!user)
@@ -32,6 +33,7 @@ module.exports.postHome = async (req, res, next) => {
     const { password: hashedPassword, ...rest } = user._doc;
     const expiryDate = new Date();
     expiryDate.setDate(expiryDate.getDate() + 7);
+    console.log("token in controller", token);
     res
       .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
       .status(200)
@@ -42,82 +44,39 @@ module.exports.postHome = async (req, res, next) => {
   }
 };
 
-// controller for rendering the signup page
-module.exports.postSignupPage = (req, res, next) => {
+// controller for updating the user profile
+module.exports.updateUserProfile = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
-    console.log(email, password, username);
-    res.status(200).json({ message: "user signed successfully" });
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
-
-// controller for rendering the login page after signup
-module.exports.postLogin = async (req, res, next) => {
-  try {
-    const { username, email, password } = req.body;
-    console.log(username, email, password);
-
-    const user = await userCollection.findOne({ email: req.body.email });
-    if (user) {
-      res.status(400).json({ success: false, message: "user already exist" });
-    } else {
-      const hashedPassword = bcryptjs.hashSync(password, 10);
-      const userDetails = new userCollection({
-        username: req.body.username,
-        email: req.body.email,
-        password: hashedPassword,
-      });
-      await userDetails.save();
-      res.status(200).json({ success: true, message: "signup successs" });
+    if (req.user.id !== req.params.id) {
+      return next(
+        errorHandler.handleError(401, "You can update your account only")
+      );
     }
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
+    const { username, email } = req.body;
+    console.log(username, email);
+    // Access uploaded file
+    const profileImage = req.file;
 
-// controller for creating the google authentication
-module.exports.googleAuth = async (req, res) => {
-  try {
-    const user = await userCollection.findOne({ email: req.body.email });
-    if (user) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-      const { password: hashedPassword, ...rest } = user._doc;
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + 7);
-      res
-        .cookie("access_token", token, {
-          httpOnly: true,
-          expires: expiryDate,
-        })
-        .status(200)
-        .json(rest);
-    } else {
-      const generatedPassword = Math.random().toString(36).slice(-8);
-      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
-      const newUser = new userCollection({
-        username: req.body.username.split(" ").join(""),
-        email: req.body.email,
-        password: hashedPassword,
-        profileImage: req.body.photo,
-      });
-      await newUser.save();
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
-      const { password: hashedPassword2, ...rest } = newUser._doc;
-      const expiryDate = new Date();
-      expiryDate.setDate(expiryDate.getDate() + 7);
-      res
-        .cookie("access_token", token, {
-          httpOnly: true,
-          expires: expiryDate,
-        })
-        .status(200)
-        .json(rest);
+    if (req.body.password) {
+      req.body.password = bcryptjs.hashSync(req.body.password, 10);
     }
+    const updatedUser = await userCollection.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          username: req.body.username,
+          email: req.body.email,
+          password: req.body.password,
+          profileImage: profileImage.filename,
+        },
+      },
+      { new: true }
+    );
+    console.log(updatedUser);
+    const { password, ...rest } = updatedUser._doc;
+    res.status(200).json(rest);
   } catch (error) {
     console.log("error", error);
+    next(error);
   }
 };

@@ -1,12 +1,13 @@
-// importing the required files for image uploading
 const multer = require("multer");
 
-// configuring multer for profile picture uploading
+// Configure Multer
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
+  destination: (req, file, cb) => {
+    // Specify the directory where uploaded files will be stored
+    cb(null, "./uploads");
   },
-  filename: function (req, file, cb) {
+  filename: (req, file, cb) => {
+    // Define the filename for the uploaded file
     cb(null, Date.now() + "-" + file.originalname);
   },
 });

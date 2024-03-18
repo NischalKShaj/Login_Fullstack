@@ -38,8 +38,10 @@ const Login = () => {
     e.preventDefault();
     try {
       dispatch(loginStart());
-      const response = await axios.post(`${BASE_URL}/home`, formData);
-      const data = await response.data;
+      const response = await axios.post(`${BASE_URL}/home`, formData, {
+        withCredentials: true,
+      });
+      const data = response.data;
       if (data.success === false) {
         dispatch(loginFailure(data.message));
         return;

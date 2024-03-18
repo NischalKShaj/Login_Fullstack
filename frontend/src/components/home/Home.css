@@ -119,6 +119,26 @@ body {
   outline: none;
 }
 
+.userpassword_box {
+  align-items: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+}
+
+.userpassword_field {
+  width: 100%;
+  height: 55px;
+  font-size: 16px;
+  background: transparent;
+  color: white;
+  padding-inline: 20px 50px;
+  border: 2px solid var(--primary-color);
+  border-radius: 100px;
+  outline: none;
+}
+
 .edit_profile {
   width: 100px;
   height: 50px;
@@ -144,15 +164,46 @@ body {
 }
 
 .profile_picture {
+  position: relative;
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  overflow: hidden;
   margin: 0 auto;
+  cursor: pointer;
+  overflow: hidden; /* Ensure content within the div is clipped */
+}
+
+.image_update {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .profile_image {
-  width: 100%;
+  width: 100%; /* Ensure the image fills the container */
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Maintain aspect ratio and cover entire container */
+  border-radius: 50%; /* Ensure the image retains its round shape */
+}
+
+.input_field:focus ~ .label,
+.input_field:valid .label {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  font-size: 14px;
+  border-radius: 30px;
+  color: var(--black-color);
+  padding: 0 10px;
+}
+
+.label {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  transition: 0.2s;
 }
