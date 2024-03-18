@@ -16,7 +16,7 @@ router.post("/auth/google", googleAuth.postGoogleAuth);
 router.post(
   "/update/:id",
   verifyToken.authenticateUserJwt,
-  uploadImage.single("file"),
+  uploadImage.single("profileImage"),
   loginController.updateUserProfile
 );
 

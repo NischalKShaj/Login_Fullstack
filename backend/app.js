@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("./config/database");
 const cors = require("cors");
 const userRoute = require("./routes/user");
+const path = require("path");
 require("dotenv").config();
 
 // intialising the app
@@ -13,7 +14,7 @@ const app = express();
 app.use(cookieParser());
 
 // setting up the public files
-app.use(express.static("uploads"));
+app.use(express.static(path.join(__dirname, "uploads")));
 
 // for passing the user details
 app.use(express.json());

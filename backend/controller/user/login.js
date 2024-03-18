@@ -52,28 +52,35 @@ module.exports.updateUserProfile = async (req, res, next) => {
         errorHandler.handleError(401, "You can update your account only")
       );
     }
-    const { username, email } = req.body;
-    console.log(username, email);
-    // Access uploaded file
-    const profileImage = req.file;
 
-    if (req.body.password) {
-      req.body.password = bcryptjs.hashSync(req.body.password, 10);
+    const { username, email, password } = req.body;
+
+    // Access uploaded file if it exists
+    let profileImage;
+    if (req.file) {
+      profileImage = req.file.filename;
     }
+
+    // Hash password if provided
+    if (password) {
+      req.body.password = bcryptjs.hashSync(password, 10);
+    }
+
+    // Update user profile
     const updatedUser = await userCollection.findByIdAndUpdate(
       req.params.id,
       {
         $set: {
-          username: req.body.username,
-          email: req.body.email,
+          username,
+          email,
           password: req.body.password,
-          profileImage: profileImage.filename,
+          profileImage, // Only update if a new image is uploaded
         },
       },
       { new: true }
     );
-    console.log(updatedUser);
-    const { password, ...rest } = updatedUser._doc;
+
+    const { password: omitPassword, ...rest } = updatedUser._doc;
     res.status(200).json(rest);
   } catch (error) {
     console.log("error", error);

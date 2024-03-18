@@ -1,4 +1,9 @@
-import React, { ChangeEvent, ChangeEventHandler, useState } from "react";
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  useEffect,
+  useState,
+} from "react";
 import "./Home.css";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -10,28 +15,11 @@ import { RootState } from "../../redux/store";
 import BASE_URL from "../../Routes/config";
 import axios from "axios";
 
-const Home = () => {
+const Home: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const dispatch = useDispatch();
-
-  // funciton for handling the update
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const target = e.currentTarget;
-    setFormData({ ...formData, [target.id]: target.value });
-  };
-
-  // Function to handle profile picture change
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log("clicked");
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedImage(file); // Set the selected image file to state
-      console.log("Selected file:", file);
-      // Perform any additional actions, such as displaying a preview of the selected image
-    }
-  };
 
   // Function to handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -39,10 +27,11 @@ const Home = () => {
 
     const updatedFormData = new FormData();
 
+    // Append the selected image to the form data if it exists
     if (selectedImage) {
       updatedFormData.append("profileImage", selectedImage);
     } else {
-      // If no new image is selected, append the current image from the currentUser object
+      // Remove the profile image field if not selected
       updatedFormData.append("profileImage", currentUser.profileImage);
     }
 
@@ -51,7 +40,9 @@ const Home = () => {
       updatedFormData.append(key, value);
     });
 
-    console.log("Form data submitted:", formData);
+    console.log("Form data submitted:", updatedFormData);
+
+    // Attempt to update user data
     try {
       dispatch(userUpdateStart());
 
@@ -60,7 +51,7 @@ const Home = () => {
         updatedFormData,
         {
           headers: {
-            "Content-Type": "multipart/form-data", // Use multipart/form-data for FormData
+            "Content-Type": "multipart/form-data",
           },
           withCredentials: true,
         }
@@ -80,6 +71,45 @@ const Home = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("Selected image:1", selectedImage);
+  }, [selectedImage]);
+
+  // Function to handle profile picture change
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      console.log("Selected image:", file);
+
+      // Display the selected image in the UI
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imageUrl = reader.result as string;
+        // Update the image source in the UI
+        const imgElement = document.getElementById(
+          "profileImagePreview"
+        ) as HTMLImageElement;
+        if (imgElement) {
+          imgElement.src = imageUrl;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Function to handle input field changes
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { id, value } = e.currentTarget;
+    if (id === "profileImage") {
+      // Handle profile image change
+      handleImageChange(e);
+    } else {
+      // Handle other form field changes
+      setFormData((prevData) => ({ ...prevData, [id]: value }));
+    }
+  };
+
   return (
     <div className="wrapper">
       <form
@@ -95,12 +125,18 @@ const Home = () => {
           <label htmlFor="profileImage" className="label"></label>
           <input
             className="image_update"
+            id="profileImage"
             type="file"
-            accept="image/*"
+            accept="image/png"
             onChange={handleImageChange}
           />
           <img
-            src={currentUser.profileImage}
+            src={
+              currentUser.profileImage.startsWith("http")
+                ? currentUser.profileImage
+                : `http://localhost:4001/img/${currentUser.profileImage}`
+            }
+            id="profileImagePreview"
             alt="Profile"
             className="profile_image"
           />
@@ -110,6 +146,7 @@ const Home = () => {
           <label htmlFor="username" className="label"></label>
           <input
             type="text"
+            id="username"
             className="username_field"
             defaultValue={currentUser.username}
             onChange={handleChange}
@@ -120,6 +157,7 @@ const Home = () => {
           <label htmlFor="email" className="label"></label>
           <input
             type="text"
+            id="email"
             className="useremail_field"
             defaultValue={currentUser.email}
             onChange={handleChange}
@@ -130,6 +168,7 @@ const Home = () => {
           <label htmlFor="password" className="label"></label>
           <input
             type="password"
+            id="password"
             className="userpassword_field"
             defaultValue="Password"
             onChange={handleChange}
