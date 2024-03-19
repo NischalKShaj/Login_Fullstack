@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("./config/database");
 const cors = require("cors");
 const userRoute = require("./routes/user");
+const adminRoute = require("./routes/admin");
 const path = require("path");
 require("dotenv").config();
 
@@ -28,6 +29,7 @@ app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 // routes for the user and admin
 app.use("/", userRoute);
+app.use("/admin", adminRoute);
 
 // error middleware
 app.use((err, req, res, next) => {

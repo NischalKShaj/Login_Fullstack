@@ -1,11 +1,12 @@
 // importing requrired modules for the redux statemanagement
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./user/userSlice";
+import adminReducer from "./admin/adminSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 // combining reducers
-const rootReducer = combineReducers({ user: userReducer });
+const rootReducer = combineReducers({ user: userReducer, admin: adminReducer });
 
 // adding the persistConfig this helps in storing the data in the localstorage
 const persistConfig = {
