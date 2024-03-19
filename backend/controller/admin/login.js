@@ -39,7 +39,12 @@ module.exports.postAdminDashBoard = async (req, res) => {
         expires: expiryDate,
       })
       .status(200)
-      .json({ success: true, message: "Login successful", email: adminMail });
+      .json({
+        success: true,
+        message: "Login successful",
+        email: adminMail,
+        userDetails,
+      });
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ success: false, message: "Something went wrong" });

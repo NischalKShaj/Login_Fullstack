@@ -49,7 +49,7 @@ const AdminLogin = () => {
         return;
       }
       dispatch(loginSuccess(data));
-      navigate("/dashboard");
+      navigate("/dashboard", { state: { userDetails: data.userDetails } });
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError<any>;

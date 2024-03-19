@@ -6,6 +6,7 @@ interface AdminState {
   currentAdmin: any;
   loading: boolean;
   error: { message: string } | null;
+  userDetails: {};
 }
 
 // creating the initial state
@@ -13,6 +14,7 @@ const initialState: AdminState = {
   currentAdmin: null,
   loading: false,
   error: null,
+  userDetails: {},
 };
 
 // creating the admin slice
@@ -27,6 +29,7 @@ const adminSlice = createSlice({
       state.currentAdmin = action.payload;
       state.loading = false;
       state.error = null;
+      state.userDetails = action.payload;
     },
     loginFailure: (state, action: PayloadAction<any>) => {
       state.loading = false;
