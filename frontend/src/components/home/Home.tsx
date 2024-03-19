@@ -10,6 +10,7 @@ import {
   userUpdateStart,
   userUpdateSuccess,
   userUpdateFailure,
+  userLogout,
 } from "../../redux/user/userSlice";
 import { RootState } from "../../redux/store";
 import BASE_URL from "../../Routes/config";
@@ -110,6 +111,16 @@ const Home: React.FC = () => {
     }
   };
 
+  // funciton to logout the user
+  const handleLogout = async () => {
+    try {
+      await fetch(`${BASE_URL}/logout`);
+      dispatch(userLogout());
+    } catch (error) {
+      console.log("error");
+    }
+  };
+
   return (
     <div className="wrapper">
       <form
@@ -178,7 +189,7 @@ const Home: React.FC = () => {
         <button className="edit_profile" type="submit">
           Update
         </button>
-        <button className="logout_user" type="button">
+        <button onClick={handleLogout} className="logout_user" type="button">
           Logout
         </button>
       </form>

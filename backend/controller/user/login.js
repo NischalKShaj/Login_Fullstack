@@ -87,3 +87,13 @@ module.exports.updateUserProfile = async (req, res, next) => {
     next(error);
   }
 };
+
+// controller for logout the user
+module.exports.getLogout = async (req, res, next) => {
+  try {
+    res.clearCookie("access_token").status(200).json("signout success");
+  } catch (error) {
+    console.log("error", error);
+    next(error);
+  }
+};

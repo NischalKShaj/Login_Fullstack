@@ -19,5 +19,6 @@ router.post(
   uploadImage.single("profileImage"),
   loginController.updateUserProfile
 );
+router.get("/logout", loginController.getLogout);
 
 module.exports = router;
