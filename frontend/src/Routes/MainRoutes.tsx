@@ -7,6 +7,7 @@ import ProfilePage from "../pages/ProfilePage";
 import PrivateRoute from "./PrivateRoute";
 import AdminLoginPage from "../pages/AdminLoginPage";
 import AdminHomePage from "../pages/AdminHomePage";
+import { AdminPrivateRoute } from "./PrivateRoute";
 
 const MainRoutes = () => {
   return (
@@ -20,7 +21,9 @@ const MainRoutes = () => {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/admin" element={<AdminLoginPage />} />
-          <Route path="/dashboard" element={<AdminHomePage />} />
+          <Route element={<AdminPrivateRoute />}>
+            <Route path="/dashboard" element={<AdminHomePage />} />
+          </Route>
         </Routes>
       </Router>
     </div>

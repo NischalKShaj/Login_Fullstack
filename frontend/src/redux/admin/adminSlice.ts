@@ -35,11 +35,17 @@ const adminSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    adminLogout: (state) => {
+      state.currentAdmin = null;
+      state.loading = false;
+      state.error = null;
+    },
   },
 });
 
 // exporting the functions that are required
-export const { loginStart, loginSuccess, loginFailure } = adminSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, adminLogout } =
+  adminSlice.actions;
 
 // exporting the reducer functions also
 export default adminSlice.reducer;
