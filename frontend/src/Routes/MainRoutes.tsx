@@ -8,6 +8,7 @@ import PrivateRoute from "./PrivateRoute";
 import AdminLoginPage from "../pages/AdminLoginPage";
 import AdminHomePage from "../pages/AdminHomePage";
 import { AdminPrivateRoute } from "./PrivateRoute";
+import UserProfilePage from "../pages/UserProfilePage";
 
 const MainRoutes = () => {
   return (
@@ -23,6 +24,10 @@ const MainRoutes = () => {
           <Route path="/admin" element={<AdminLoginPage />} />
           <Route element={<AdminPrivateRoute />}>
             <Route path="/dashboard" element={<AdminHomePage />} />
+            <Route
+              path="/dashboard/profile/:id"
+              element={<UserProfilePage />}
+            />
           </Route>
         </Routes>
       </Router>

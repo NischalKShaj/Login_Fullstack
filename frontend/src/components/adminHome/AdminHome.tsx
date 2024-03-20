@@ -6,6 +6,7 @@ import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons"; // Edit and
 
 import "./adminHome.css"; // Import the CSS file
 import Header from "../header/Header";
+import { Link } from "react-router-dom";
 
 const AdminHome = () => {
   const userDetails = useSelector(
@@ -52,9 +53,9 @@ const AdminHome = () => {
               <td>{user.email}</td>
               {/* Add action buttons or links */}
               <td>
-                <button className="edit-button">
+                <Link to={`profile/${user._id}`} className="edit-button">
                   <FontAwesomeIcon icon={faEdit} />
-                </button>
+                </Link>
                 <button className="delete-button">
                   <FontAwesomeIcon icon={faTrash} />
                 </button>

@@ -1,10 +1,11 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BASE_URL from "../../Routes/config";
 import { adminLogout } from "../../redux/admin/adminSlice";
 import "../header/header.css";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -12,7 +13,20 @@ const Header = () => {
 
   // function to add a new use
   const handleNewUser = () => {
-    navigate("/signup");
+    confirmAlert({
+      title: "Confirm",
+      message: "Are you sure you want to add a new user?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => navigate("/signup"),
+        },
+        {
+          label: "No",
+          onClick: () => {}, // Do nothing
+        },
+      ],
+    });
   };
 
   //   fuction to logout from the dashboard

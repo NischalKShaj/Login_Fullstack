@@ -8,7 +8,12 @@
 .user-table {
   border-collapse: collapse;
   width: 100%;
-  background-color: rgba(248, 248, 248, 0.8); /* Semi-transparent background */
+  background-color: rgba(
+    248,
+    248,
+    248,
+    0.568
+  ); /* Semi-transparent background */
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 }

@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 // setting the admin authentication
 module.exports.authenticateAdminJwt = (req, res, next) => {
-  const token = req.cookies.access_token;
+  const token = req.cookies.admin_access_token;
   console.log("token in middleware", token);
   if (!token) {
     return res.status(401).json({ message: "Unauthorized admin" });

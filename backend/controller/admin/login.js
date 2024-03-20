@@ -51,6 +51,17 @@ module.exports.postAdminDashBoard = async (req, res) => {
   }
 };
 
+// controller for editing the user from the admin side
+module.exports.postUserEdit = async (req, res) => {
+  try {
+    if (req.user.id !== req.params.id) {
+      re;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // controller for logout from the admin page
 module.exports.getLogout = async (req, res, next) => {
   try {
