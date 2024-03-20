@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import "../userProfile/userProfile.css";
 import {
@@ -14,12 +14,11 @@ import BASE_URL from "../../Routes/config";
 const UserProfile = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [formData, setFormData] = useState<Record<string, string>>({});
   const userDetails = useSelector(
     (state: RootState) => state.admin.currentAdmin.userDetails
   );
-  console.log(userDetails);
+  console.log("userDetails", userDetails);
 
   //   finding the user based on the params
   const currentUser = userDetails.find((user: any) => user._id === id);
@@ -29,7 +28,7 @@ const UserProfile = () => {
     const { id, value } = e.currentTarget;
     setFormData((prevData) => ({ ...prevData, [id]: value }));
   };
-  console.log(formData);
+  console.log("formData", formData);
 
   //   function to handle submition of the edited data
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,7 +52,6 @@ const UserProfile = () => {
         return;
       }
       dispatch(userUpdateSuccess(data));
-      navigate("/dashboard");
     } catch (error: any) {
       console.log("error", error.response.data);
       dispatch(userUpdateFailure(error));
@@ -125,9 +123,14 @@ const UserProfile = () => {
           />
         </div>
 
-        <button className="edit_userprofile" type="submit">
+        <button className="edit_profile" type="submit">
           Update
         </button>
+        <Link to={"/dashboard"}>
+          <button className="logout_user" type="button">
+            Dashboard
+          </button>
+        </Link>
       </form>
     </div>
   );

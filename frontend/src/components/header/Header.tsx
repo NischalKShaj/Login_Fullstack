@@ -42,11 +42,6 @@ const Header = () => {
   return (
     <div className="header-container">
       <h4 className="header-title">Welcome to admin dashboard</h4>
-      <input
-        className="header-search"
-        placeholder="enter the username"
-        type="search"
-      />
       <button className="header-button" onClick={handleNewUser} type="button">
         Add User
       </button>

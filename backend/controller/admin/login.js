@@ -52,13 +52,63 @@ module.exports.postAdminDashBoard = async (req, res) => {
 };
 
 // controller for editing the user from the admin side
-module.exports.postUserEdit = async (req, res) => {
+module.exports.postUserEdit = async (req, res, next) => {
   try {
-    if (req.user.id !== req.params.id) {
-      re;
+    const userId = req.params.id;
+    const userDetails = await userCollection.findOne({ _id: userId });
+    console.log("userDetails : ", userDetails);
+
+    const { username, email, password } = req.body;
+
+    console.log("image", req.file);
+
+    // accessing the uplaoded files
+    let profileImage;
+    if (req.file) {
+      profileImage = req.file.filename;
     }
+    // Hash password if provided
+    if (password) {
+      req.body.password = bcryptjs.hashSync(password, 10);
+    }
+    // update the user details
+    const updatedUser = await userCollection.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          username,
+          email,
+          password: req.body.password,
+          profileImage,
+        },
+      },
+      { new: true }
+    );
+    console.log("updatedUser", updatedUser);
+    const { password: omitedPassword, ...rest } = updatedUser._doc;
+    res.status(200).json({ success: true, user: rest });
   } catch (error) {
     console.log(error);
+    next(error);
+  }
+};
+
+// controller for deleting the user
+module.exports.deleteUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const userDetails = await userCollection.findOneAndDelete({ _id: userId });
+    if (!userDetails) {
+      return res
+        .status(404)
+        .json({ success: false, message: "user deleted successfully" });
+    }
+    res
+      .status(200)
+      .json({ success: true, message: "user deleted successfully" });
+  } catch (error) {
+    console.log("error", error);
+    next(error);
   }
 };
 

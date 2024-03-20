@@ -74,7 +74,7 @@ module.exports.updateUserProfile = async (req, res, next) => {
           username,
           email,
           password: req.body.password,
-          profileImage, // Only update if a new image is uploaded
+          profileImage,
         },
       },
       { new: true }

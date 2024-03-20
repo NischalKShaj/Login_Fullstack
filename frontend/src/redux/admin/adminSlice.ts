@@ -40,12 +40,30 @@ const adminSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    deleteUserStart: (state) => {
+      state.loading = true;
+    },
+    deleteUserSuccess: (state) => {
+      state.loading = false;
+      state.error = null;
+    },
+    deleteUserFailure: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.error = { message: action.payload };
+    },
   },
 });
 
 // exporting the functions that are required
-export const { loginStart, loginSuccess, loginFailure, adminLogout } =
-  adminSlice.actions;
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  adminLogout,
+  deleteUserStart,
+  deleteUserSuccess,
+  deleteUserFailure,
+} = adminSlice.actions;
 
 // exporting the reducer functions also
 export default adminSlice.reducer;

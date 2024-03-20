@@ -89,19 +89,6 @@ const Signup = () => {
             password
           </label>
         </div>
-
-        {/* <div className="input_box">
-          <label htmlFor="image" className="imageLabel">
-            Upload profile picture
-          </label>
-          <input
-            type="file"
-            id="image"
-            className="input_field"
-            // onChange={handleImageChange}
-          />
-        </div> */}
-
         <div className="input_box">
           <button disabled={loading} type="submit" className="input_submit">
             {loading ? "Loading..." : "sign up"}
