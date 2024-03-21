@@ -19,7 +19,7 @@ const AdminHome = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userDetails = useSelector(
-    (state: RootState) => state.admin.currentAdmin.userDetails
+    (state: RootState) => state?.admin?.currentAdmin.userDetails
   );
   const currentAdmin = useSelector((state: RootState) => state.admin);
   console.log("userDetails", userDetails);
@@ -50,7 +50,7 @@ const AdminHome = () => {
         dispatch(deleteUserFailure(data));
         return;
       }
-      dispatch(deleteUserSuccess());
+      dispatch(deleteUserSuccess(data.userId));
     } catch (error) {
       console.log("error", error);
       dispatch(deleteUserFailure("An error occured while deleting the user"));

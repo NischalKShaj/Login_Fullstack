@@ -105,7 +105,11 @@ module.exports.deleteUser = async (req, res, next) => {
     }
     res
       .status(200)
-      .json({ success: true, message: "user deleted successfully" });
+      .json({
+        success: true,
+        message: "user deleted successfully",
+        userId: userId,
+      });
   } catch (error) {
     console.log("error", error);
     next(error);

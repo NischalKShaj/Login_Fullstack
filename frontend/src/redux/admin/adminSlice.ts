@@ -46,6 +46,9 @@ const adminSlice = createSlice({
     deleteUserSuccess: (state) => {
       state.loading = false;
       state.error = null;
+      state.currentAdmin.userDetails = state.currentAdmin.userDetails.filter(
+        (user: any) => user._id !== state
+      );
     },
     deleteUserFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;

@@ -4,6 +4,8 @@ import userReducer from "./user/userSlice";
 import adminReducer from "./admin/adminSlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import hardSet from "redux-persist/es/stateReconciler/hardSet";
+import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
 
 // combining reducers
 const rootReducer = combineReducers({ user: userReducer, admin: adminReducer });
@@ -13,9 +15,11 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
+  stateReconciler: hardSet,
 };
 
 // using redux persist
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // exporting the store
