@@ -4,12 +4,19 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../Routes/config";
 import Oauth from "../OAuth/Oauth";
+import { userAddedSuccessAdmin } from "../../redux/admin/adminSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const Signup = () => {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const userDetails = useSelector(
+    (state: RootState) => state?.admin?.currentAdmin.userDetails
+  );
 
   // function to handle data in the form
   const handleSignup: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -30,6 +37,7 @@ const Signup = () => {
         setError(data.message);
         return;
       }
+      dispatch(userAddedSuccessAdmin(data.userDetails));
       navigate("/");
     } catch (error: any) {
       setLoading(false);

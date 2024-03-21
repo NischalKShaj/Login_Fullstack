@@ -36,7 +36,9 @@ module.exports.postLogin = async (req, res, next) => {
         password: hashedPassword,
       });
       await userDetails.save();
-      res.status(200).json({ success: true, message: "signup successs" });
+      res
+        .status(200)
+        .json({ success: true, message: "signup successs", userDetails });
     }
   } catch (error) {
     console.log(error);

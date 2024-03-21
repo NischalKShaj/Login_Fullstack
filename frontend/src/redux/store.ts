@@ -15,7 +15,6 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  stateReconciler: hardSet,
 };
 
 // using redux persist

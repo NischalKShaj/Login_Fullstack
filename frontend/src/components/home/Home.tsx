@@ -143,7 +143,7 @@ const Home: React.FC = () => {
           />
           <img
             src={
-              currentUser.profileImage.startsWith("http")
+              currentUser?.profileImage?.startsWith("http")
                 ? currentUser.profileImage
                 : `http://localhost:4001/img/${currentUser.profileImage}`
             }

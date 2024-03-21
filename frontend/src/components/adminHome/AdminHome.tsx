@@ -83,7 +83,7 @@ const AdminHome = () => {
               <td>
                 <img
                   src={
-                    user.profileImage.startsWith("http")
+                    user?.profileImage?.startsWith("http")
                       ? user.profileImage
                       : `http://localhost:4001/img/${user.profileImage}`
                   }

@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../redux/store";
 import "../userProfile/userProfile.css";
 import {
@@ -10,9 +10,11 @@ import {
 } from "../../redux/user/userSlice";
 import axios from "axios";
 import BASE_URL from "../../Routes/config";
+import { userUpdateSuccessAdmin } from "../../redux/admin/adminSlice";
 
 const UserProfile = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState<Record<string, string>>({});
   const userDetails = useSelector(
@@ -52,6 +54,8 @@ const UserProfile = () => {
         return;
       }
       dispatch(userUpdateSuccess(data));
+      dispatch(userUpdateSuccessAdmin(data.user));
+      navigate("/dashboard");
     } catch (error: any) {
       console.log("error", error.response.data);
       dispatch(userUpdateFailure(error));
@@ -80,7 +84,7 @@ const UserProfile = () => {
           />
           <img
             src={
-              currentUser.profileImage.startsWith("http")
+              currentUser?.profileImage?.startsWith("http")
                 ? currentUser.profileImage
                 : `http://localhost:4001/img/${currentUser.profileImage}`
             }
