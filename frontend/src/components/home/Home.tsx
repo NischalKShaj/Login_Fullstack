@@ -20,6 +20,8 @@ const Home: React.FC = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [error, setError] = useState<string>("");
+  const [message, setMessage] = useState<String>("");
   const dispatch = useDispatch();
 
   // Function to handle form submission
@@ -66,8 +68,10 @@ const Home: React.FC = () => {
       }
 
       dispatch(userUpdateSuccess(data));
+      setMessage("user updated successfully");
     } catch (error: any) {
       console.log("error", error.response.data);
+      setError("error while updating the user details");
       dispatch(userUpdateFailure(error));
     }
   };
@@ -192,6 +196,8 @@ const Home: React.FC = () => {
         <button onClick={handleLogout} className="logout_user" type="button">
           Logout
         </button>
+        {message && <p style={{ color: "#04fc04a8" }}>{message}</p>}
+        {error && <p style={{ color: "#f00303be" }}></p>}
       </form>
     </div>
   );

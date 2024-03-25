@@ -12,5 +12,5 @@ export default PrivateRoute;
 
 export const AdminPrivateRoute = () => {
   const { currentAdmin } = useSelector((state: RootState) => state.admin);
-  return currentAdmin ? <Outlet /> : <Navigate to="/admin" />;
+  return currentAdmin ? <Outlet /> : <Navigate to="/admin" replace />;
 };

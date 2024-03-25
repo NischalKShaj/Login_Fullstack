@@ -21,7 +21,7 @@ const AdminLogin = () => {
   //   function to check whether the admin is logged in or not
   useEffect(() => {
     if (currentAdmin) {
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     }
   }, [currentAdmin, navigate]);
 
@@ -49,7 +49,10 @@ const AdminLogin = () => {
         return;
       }
       dispatch(loginSuccess(data));
-      navigate("/dashboard", { state: { userDetails: data.userDetails } });
+      navigate("/dashboard", {
+        state: { userDetails: data.userDetails },
+        replace: true,
+      });
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError<any>;
