@@ -23,7 +23,7 @@ const Login = () => {
   // using useEffect to check whether user is logged in or not
   useEffect(() => {
     if (currentUser) {
-      navigate("/home");
+      navigate("/home", { replace: true });
     }
   }, [currentUser, navigate]);
 
@@ -47,7 +47,7 @@ const Login = () => {
         return;
       }
       dispatch(loginSuccess(data));
-      navigate("/home");
+      navigate("/home", { replace: true });
     } catch (error: any) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError<any>;
